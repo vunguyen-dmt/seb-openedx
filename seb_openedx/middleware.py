@@ -37,7 +37,6 @@ class SecureExamBrowserMiddleware(MiddlewareMixin):
 
         LOG.info("SEB course_key_string | course_key", course_key_string, course_key)
         LOG.info("SEB path", request.path)
-        LOG.info("SEB Whitelisting", str(config.get('WHITELIST_PATHS', [])))
 
         # When the request is for masquerade (ajax) we leave it alone
         if self.get_view_path(request) == 'courseware.masquerade':
@@ -48,6 +47,7 @@ class SecureExamBrowserMiddleware(MiddlewareMixin):
             access_denied = True
 
             config = get_config_by_course(course_key)
+            LOG.info("SEB Whitelisting", str(config.get('WHITELIST_PATHS', [])))
 
             if self.is_whitelisted_view(config, request, course_key):
                 # First: Broad white-listing
