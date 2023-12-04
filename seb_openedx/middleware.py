@@ -35,6 +35,10 @@ class SecureExamBrowserMiddleware(MiddlewareMixin):
         course_key_string = view_kwargs.get('course_key_string') or view_kwargs.get('course_id')
         course_key = CourseKey.from_string(course_key_string) if course_key_string else None
 
+        LOG.info("SEB course_key_string | course_key", course_key_string, course_key)
+        LOG.info("SEB path", request.path)
+        LOG.info("SEB Whitelisting", str(config.get('WHITELIST_PATHS', [])))
+
         # When the request is for masquerade (ajax) we leave it alone
         if self.get_view_path(request) == 'courseware.masquerade':
             return None
